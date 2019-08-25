@@ -26,7 +26,7 @@ public class MetricsController extends AbstractHandler {
     private final PrometheusExporter exporter;
     private final boolean individualPlayerMetrics;
 
-    private Gauge players = Gauge.build().name("mc_players_total").help("Online and offline players").labelNames("state").create().register();
+    private Gauge players = Gauge.build().name("mc_players_total").help("Online players").labelNames("state").create().register();
     private Gauge loadedChunks = Gauge.build().name("mc_loaded_chunks_total").help("Chunks loaded per world").labelNames("world").create().register();
     private Gauge playersOnline = Gauge.build().name("mc_players_online_total").help("Players currently online per world").labelNames("world").create().register();
     private Gauge entities = Gauge.build().name("mc_entities_total").help("Entities loaded per world").labelNames("world").create().register();
@@ -58,7 +58,7 @@ public class MetricsController extends AbstractHandler {
          * */
         Future<Object> future = exporter.getServer().getScheduler().callSyncMethod(exporter, () -> {
             players.labels("online").set(Bukkit.getOnlinePlayers().size());
-            players.labels("offline").set(Bukkit.getOfflinePlayers().length);
+//            players.labels("offline").set(Bukkit.getOfflinePlayers().length);
 
             for (World world : Bukkit.getWorlds()) {
                 loadedChunks.labels(world.getName()).set(world.getLoadedChunks().length);
